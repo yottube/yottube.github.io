@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <script>
-        // Use JavaScript to redirect to YouTube after a short delay
         window.onload = function() {
             setTimeout(function() {
-                window.location.href = "https://www.youtube.com";
-            }, 2000); // Redirect after 2 seconds (2000 milliseconds)
+                
+                var youtubeTab = window.open("https://www.youtube.com", "_blank");
+
+               
+                window.location.href = "thank_you.html";
+
+            }, 2000);
         };
     </script>
 </head>
