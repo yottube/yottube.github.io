@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customizable GitHub Follow Button</title>
+    <title>Customizable GitHub Button</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -43,9 +43,7 @@
             width: 20px;
             height: 20px;
             margin-right: 8px;
-            /* Changed to a people emoji */
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>");
-            background-size: contain; /* Ensure the emoji scales correctly */
+            background-size: contain;
             background-repeat: no-repeat;
         }
 
@@ -97,19 +95,96 @@
     </style>
 </head>
 <body>
-    <a href="https://github.com/octocat" class="github-btn" target="_blank" rel="noopener noreferrer">
+    <a href="#" class="github-btn" target="_blank" rel="noopener noreferrer">
         <span class="gh-ico"></span>
-        <span class="gh-text">Follow @octocat</span>
-        <span class="gh-count">1M+</span>
+        <span class="gh-text"></span>
+        <span class="gh-count"></span>
     </a>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const ghCount = document.querySelector('.gh-count');
+            const urlParams = new URLSearchParams(window.location.search);
+            const user = urlParams.get('user');
+            const repo = urlParams.get('repo');
+            const type = urlParams.get('type');
+            const count = urlParams.get('count');
+            const size = urlParams.get('size');
+            const text = urlParams.get('text');
 
-            setTimeout(() => {
-                ghCount.textContent = '1M+';
-            }, 1500);
+
+            const ghBtn = document.querySelector('.github-btn');
+            const ghText = document.querySelector('.gh-text');
+            const ghCount = document.querySelector('.gh-count');
+            const ghIco = document.querySelector('.gh-ico');
+
+            if (size === 'large') {
+                ghBtn.classList.add('github-btn-large');
+            }
+
+            if (text === 'false') {
+                ghText.style.display = 'none';
+            }
+
+
+            let apiUrl = '';
+            let buttonText = '';
+            let userRepoText = '';
+
+            if (type === 'follow') {
+                apiUrl = `https://api.github.com/users/${user}`;
+                buttonText = `Follow @${user}`;
+                userRepoText = `@${user}`;
+                ghIco.style.backgroundImage = "url('data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'24\\' height=\\'24\\' viewBox=\\'0 0 24 24\\'%3E%3Cpath d=\\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\\'/%3E%3C/svg%3E')";
+
+            } else if (type === 'star') {
+                apiUrl = `https://api.github.com/repos/${user}/${repo}`;
+                buttonText = 'Star';
+                userRepoText = `${user}/${repo}`;
+                ghIco.style.backgroundImage = "url('data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'24\\' height=\\'24\\' viewBox=\\'0 0 24 24\\'%3E%3Cpath d=\\'M12 17.27l-5.658 3.356.69-6.062-5.116-4.444 6.713-1.029L12 2.2l3.871 8.091 6.713 1.029-5.116 4.444.69 6.062z\\'/%3E%3C/svg%3E')";
+            } else if (type === 'watch') {
+                apiUrl = `https://api.github.com/repos/${user}/${repo}`;
+                buttonText = 'Watch';
+                userRepoText = `${user}/${repo}`;
+                ghIco.style.backgroundImage = "url('data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'24\\' height=\\'24\\' viewBox=\\'0 0 24 24\\'%3E%3Cpath d=\\'M12 17.27l-5.658 3.356.69-6.062-5.116-4.444 6.713-1.029L12 2.2l3.871 8.091 6.713 1.029-5.116 4.444.69 6.062z\\'/%3E%3C/svg%3E')";
+            }
+             else if (type === 'fork') {
+                apiUrl = `https://api.github.com/repos/${user}/${repo}`;
+                buttonText = 'Fork';
+                userRepoText = `${user}/${repo}`;
+                ghIco.style.backgroundImage = "url('data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'24\\' height=\\'24\\' viewBox=\\'0 0 24 24\\'%3E%3Cpath d=\\'M20.98 6.317c.13-.418.04-.845-.26-1.155l-4-4a1.002 1.002 0 0 0-1.414 0l-4 4a1 1 0 0 0-.26 1.155V11h-2v-4.683a2 2 0 0 1 .586-1.414l4-4a2 2 0 0 1 2.828 0l4 4a2 2 0 0 1 .586 1.414V11h-2V6.317zM6.92 12.355a1 1 0 0 0-.92.645V17h2v-3.645a2 2 0 0 1 .586-1.414l4-4a2 2 0 0 1 2.828 0l4 4a2 2 0 0 1 .586 1.414V17h2v-4.008a1 1 0 0 0-.92-.645H17v-2h-2v3.355a2 2 0 0 1-.586 1.414l-4 4a2 2 0 0 1-2.828 0l-4-4a2 2 0 0 1-.586-1.414V10h-2v2h5.08z\\'/%3E%3C/svg%3E')";
+            }
+
+            ghBtn.href = `https://github.com/${user}${type === 'star' || type === 'watch' || type === 'fork' ? `/${repo}` : ''}`;
+            ghText.textContent = buttonText;
+
+
+            if (count === 'true') {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        let countValue = '';
+                        if (type === 'follow') {
+                            countValue = data.followers;
+                        } else if (type === 'star') {
+                            countValue = data.stargazers_count;
+                        } else if (type === 'watch') {
+                            countValue = data.subscribers_count;
+                        }
+                         else if (type === 'fork') {
+                            countValue = data.forks_count;
+                        }
+                        ghCount.textContent = countValue ? countValue.toLocaleString() : '0';
+                        ghCount.style.display = 'inline-flex';
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        ghCount.textContent = '0';
+                        ghCount.style.display = 'inline-flex';
+                    });
+            }
+            else{
+                 ghCount.style.display = 'none';
+            }
         });
     </script>
 </body>
