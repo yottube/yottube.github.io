@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You</title>
+    <title>Important Message</title>
     <style>
         body {
             font-family: sans-serif;
@@ -41,10 +41,30 @@
             border-radius: 5px;
         }
     </style>
+    <script>
+        window.onload = function() {
+            const titleElement = document.querySelector('title');
+            const messages = [
+                "⚠️ Please Click",
+                "for a message",
+                "from our team",
+            
+            ];
+            let index = 0;
+
+            function updateTitle() {
+                titleElement.textContent = messages[index];
+                index = (index + 1) % messages.length;
+            }
+
+            updateTitle();
+            setInterval(updateTitle, 1000);
+        };
+    </script>
 </head>
 <body>
     <div class="container">
-        <h1>Thank You!</h1>
+        <h1>An important message from us</h1>
         <p>You have been redirected to YouTube.  This service is not provided by YouTube.</p>
         <p>This domain has been secured to prevent scams and impersonation of YouTube.</p>
         <p class="warning">Beware of scams. Do not provide personal information to unofficial websites.</p>
